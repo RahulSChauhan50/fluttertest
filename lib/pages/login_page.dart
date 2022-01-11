@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import "package:flutter/material.dart";
+import 'package:fluttertest/Utils/Routes.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -37,7 +38,7 @@ class Login extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        print("dvdsv");
+                        Navigator.pushNamed(context, MyRoutes.homeRoute);
                       },
                       child: Text("Login"),
                       style: TextButton.styleFrom(
