@@ -41,7 +41,7 @@ class _LoginState extends State<Login> {
               height: 40,
             ),
             Text(
-              "Welcome" + name,
+              "Welcome" ,
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             Padding(
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                           }
                           return null;
                         },
-                      ),
+                      ), 
                       TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
