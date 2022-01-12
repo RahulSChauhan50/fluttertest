@@ -11,6 +11,21 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String name = "";
   bool changeButton = false;
+  final _formKey = GlobalKey<FormState>();
+
+  moveToHome(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        changeButton = !changeButton;
+      });
+      await Future.delayed(Duration(seconds: 1));
+      await Navigator.pushNamed(context, MyRoutes.homeRoute);
+      setState(() {
+        changeButton = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -32,64 +47,73 @@ class _LoginState extends State<Login> {
             Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                          hintText: "Enter usename", labelText: "Username"),
-                      onChanged: (value) => setState(() {
-                        name = value;
-                      }),
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          hintText: "Enter password", labelText: "Password"),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    InkWell(
-                      onTap: () => setState(() {
-                        changeButton = !changeButton;
-                      }),
-                      //     Navigator.pushNamed(context, MyRoutes.homeRoute),
-                      child: AnimatedContainer(
-                        duration: Duration(seconds: 1),
-                        width: changeButton ? 110 : 150,
-                        height: 40,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.deepPurple,
-                          shape: changeButton
-                              ? BoxShape.circle
-                              : BoxShape.rectangle,
-                          //borderRadius: BorderRadius.circular(8)),
-                        ),
-                        child: changeButton
-                            ? Icon(
-                                Icons.done,
-                                color: Colors.white,
-                              )
-                            : Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
-                              ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                            hintText: "Enter usename", labelText: "Username"),
+                        onChanged: (value) => setState(() {
+                          name = value;
+                        }),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Username cannot be NULL";
+                          }
+                          return null;
+                        },
                       ),
-                    )
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     Navigator.pushNamed(context, MyRoutes.homeRoute);
-                    //   },
-                    //   child: Text("Login"),
-                    //   style: TextButton.styleFrom(
-                    //     minimumSize: Size(150, 40),
-                    //   ),
-                    // ),
-                  ],
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            hintText: "Enter password", labelText: "Password"),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Password cannot be NULL";
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Material(
+                        color: Colors.deepPurple,
+                        borderRadius:
+                            BorderRadius.circular(changeButton ? 50 : 8),
+                        child: InkWell(
+                          onTap: () => moveToHome(context),
+                          splashColor: Colors.purple,
+                          child: AnimatedContainer(
+                            duration: Duration(seconds: 1),
+                            width: changeButton ? 40 : 150,
+                            height: 40,
+
+                            alignment: Alignment.center,
+                            // decoration: BoxDecoration(
+                            //   color: Colors.deepPurple,
+                            //   shape: changeButton
+                            //       ? BoxShape.circle
+                            //       : BoxShape.rectangle,
+                            // ),
+                            child: changeButton
+                                ? Icon(
+                                    Icons.done,
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 )),
           ],
         ),
